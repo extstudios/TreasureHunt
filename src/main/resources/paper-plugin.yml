@@ -1,0 +1,40 @@
+name: TreasureHunt
+version: '1.0'
+main: org.extstudios.treasureHunt.TreasureHunt
+api-version: '1.21.8'
+authors: [ eextr0 ]
+
+permissions:
+  treasurehunt.commands.*:
+    default: op
+    description: All Treasure Hunt commands
+    children:
+      treasurehunt.create: true
+      treasurehunt.delete: true
+      treasurehunt.completed: true
+      treasurehunt.list: true
+      treasurehunt.reload: true
+      treasurehunt.gui: true
+
+  treasurehunt.commands:
+    default: op
+    description: Base permission for /treasure
+
+  treasurehunt.create:
+    default: op
+    description: Create a treasure
+  treasurehunt.delete:
+    default: op
+    description: Delete a treasure
+  treasurehunt.completed:
+    default: op
+    description: View found-by list
+  treasurehunt.list:
+    default: op
+    description: List treasures in chat
+  treasurehunt.reload:
+    default: op
+    description: Reload plugin cache
+  treasurehunt.gui:
+    default: op
+    description: Open the GUI

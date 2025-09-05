@@ -1,0 +1,17 @@
+mysql:
+  host: localhost
+  port: 3306
+  database: minecraft
+  username: root
+  password: secret
+  useSSL: false
+  pool:
+    maximumPoolSize: 10
+    minimumIdle: 2
+    connectionTimeoutMs: 10000
+    idleTimeoutMs: 600000
+    maxLifetimeMs: 180000
+
+#watcher poll interval for DB refresh events (seconds). Lower = faster cross-server sync.
+#Set to 0 to disable.
+watcher-interval-seconds: 2
