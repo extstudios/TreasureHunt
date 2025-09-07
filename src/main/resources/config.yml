@@ -14,4 +14,4 @@ mysql:
 
 #watcher poll interval for DB refresh events (seconds). Lower = faster cross-server sync.
 #Set to 0 to disable.
-watcher-interval-seconds: 2
+refresh-interval-seconds: 2

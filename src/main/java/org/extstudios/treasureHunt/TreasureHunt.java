@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.extstudios.treasureHunt.Command.CommandRegistrar;
 import org.extstudios.treasureHunt.Command.TreasureCommand;
 import org.extstudios.treasureHunt.Listeners.InteractListener;
+import org.extstudios.treasureHunt.Listeners.ProtectionListener;
 import org.extstudios.treasureHunt.Model.LocationKey;
 import org.extstudios.treasureHunt.Model.Treasure;
 import org.extstudios.treasureHunt.db.Database;
@@ -68,8 +69,9 @@ public final class TreasureHunt extends JavaPlugin {
         }
 
         getServer().getPluginManager().registerEvents(new InteractListener(this), this);
-        getLogger().info("[debug] InteractListener registered");
+        getServer().getPluginManager().registerEvents(new ProtectionListener(this), this);
         getServer().getPluginManager().registerEvents(new TreasureGui(this), this);
+
 
         if (refreshIntervalSeconds > 0) {
             long ticks = refreshIntervalSeconds * 20L;

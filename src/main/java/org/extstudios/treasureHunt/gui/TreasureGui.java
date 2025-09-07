@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.extstudios.treasureHunt.Model.Treasure;
@@ -20,6 +21,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TreasureGui implements Listener {
     private static TreasureHunt plugin;
 
+    private static final class invHolder implements InventoryHolder {
+        public Inventory getInventory() {return null;}
+    }
+
     public TreasureGui(TreasureHunt p) {
         plugin = p;
     }
@@ -30,7 +35,6 @@ public class TreasureGui implements Listener {
         Collection< Treasure> all = plugin.getTreasuresById().values();
         List<Treasure> list = new ArrayList<>(all);
         list.sort(Comparator.comparing(Treasure::id));
-
         int pageSize = 45;
         int totalPages = Math.max(1, (int) Math.ceil(list.size() / (double) pageSize));
         page = Math.max(0, Math.min(page, totalPages -1 ));
@@ -38,7 +42,7 @@ public class TreasureGui implements Listener {
         int to = Math.min(from + pageSize, list.size());
         List<Treasure> sub = list.subList(from, to);
 
-        Inventory inv = Bukkit.createInventory(null, 54, "Treasure Hunt * Page " + (page + 1) + "/" + totalPages);
+        Inventory inv = Bukkit.createInventory(new invHolder(), 54, "Treasure Hunt * Page " + (page + 1) + "/" + totalPages);
 
         int slot = 0;
         for (Treasure t : sub) {
@@ -49,10 +53,10 @@ public class TreasureGui implements Listener {
             meta.setDisplayName(t.id());
             meta.setLore(java.util.List.of(
                     "Location: " +t.world()+ ":" +t.x()+","+t.y()+","+t.z(),
-                    "§7Command:",
-                    "§8/" + t.command(),
+                    "Command:",
+                    "/" + t.command(),
                     "",
-                    "§cClick to §lDELETE§r§c this treasure"
+                    "click to DELETE this treasure"
             ));
             item.setItemMeta(meta);
             inv.setItem(slot++, item);
@@ -85,8 +89,9 @@ public class TreasureGui implements Listener {
     public void onClick(InventoryClickEvent e) {
         HumanEntity clicker = e.getWhoClicked();
         if (!(clicker instanceof Player p)) return;
-        String title = e.getView().getTitle();
-        if (title == null || !title.startsWith("Treasure Hunt")) return;
+        Inventory top = e.getView().getTopInventory();
+        if (!(top.getHolder() instanceof invHolder)) return;
+        if (e.getClickedInventory() != e.getView().getTopInventory()) return;
         e.setCancelled(true);
 
         ItemStack current = e.getCurrentItem();
@@ -129,9 +134,7 @@ public class TreasureGui implements Listener {
 
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
-        String title = e.getView().getTitle();
-        if (title != null && title.startsWith("Treasure Hunt")) {
-            openPages.remove(e.getPlayer().getUniqueId());
-        }
+        if (!(e.getView().getTopInventory().getHolder() instanceof invHolder)) return;
+        openPages.remove(e.getPlayer().getUniqueId());
     }
 }
