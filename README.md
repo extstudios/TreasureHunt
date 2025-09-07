@@ -15,7 +15,7 @@ git clone https://github.com/extstudios/TreasureHunt.git
 cd TreasureHunt
 mvn clean package
 ```
-The project is a Maven build targeting Java 21 and depends on paper-api:1.21.8-R0.1-SNAPSHOT (scope provided) with HikariCP 7.0.2 for connection pooling.
+The project is a Maven build targeting Java 21 and depends on paper-api:1.21.8-R0.1-SNAPSHOT (scope provided) with HikariCP 7.0.2 for connection pooling.  
 2. Drop into your server
 - Place the built JAR in your server’s plugins/ folder.
 - The plugin declares api-version: '1.21.8'.
